@@ -15,11 +15,8 @@ import com.alex.world.World;
 
 public class Entity {
 	
-	public static BufferedImage[] PLAYER_RIGHT = {Game.spritesheet.getSprite(48, 0, 16, 16),Game.spritesheet.getSprite(48, 16, 16, 16)};
-	public static BufferedImage[] PLAYER_LEFT = {Game.spritesheet.getSprite(64, 0, 16, 16),Game.spritesheet.getSprite(64, 16, 16, 16)};
-	public static BufferedImage ENEMY1_LEFT = Game.spritesheet.getSprite(80, 0, 16, 16);
-	public static BufferedImage ENEMY1_RIGHT = Game.spritesheet.getSprite(96, 0, 16, 16);
 	public static BufferedImage COIN = Game.spritesheet.getSprite(16, 16, 16, 16);
+	public static BufferedImage SNOW = Game.spritesheet.getSprite(0, 48, 16, 16);
 	
 	public double x;
 	public double y;
@@ -135,9 +132,31 @@ public class Entity {
 		return e1Mask.intersects(e2Mask);
 	}
 	
+	public static boolean isCollidingPerfect(int x1,int y1,int[] pixels1,BufferedImage sprite1,int x2,int y2,int[] pixels2,BufferedImage sprite2) {
+		
+		for(int xx1 = 0; xx1 < sprite1.getWidth(); xx1++) {
+			for(int yy1 = 0; yy1 < sprite1.getHeight(); yy1++) {
+				for(int xx2 = 0; xx2 < sprite2.getWidth(); xx2++) {
+					for(int yy2 = 0; yy2 < sprite2.getHeight(); yy2++) {
+						int pixelAtual1 = pixels1[xx1+yy1*sprite1.getWidth()];
+						int pixelAtual2 = pixels2[xx2+yy2*sprite2.getWidth()];
+						if(pixelAtual1 == 0X00000000 || pixelAtual2 == 0X00000000) {
+							continue;
+						}
+						if(xx1+x1 == xx2+x2 & yy1+y1 == yy2+y2) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	
 	public void render(Graphics g) {
-		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
+		//g.drawImage(sprite, this.getX() -8- Camera.x, this.getY() -8- Camera.y, 24, 24, null);
 		//g.setColor(Color.red);
 		//g.fillRect(this.getX() +maskx - Camera.x, this.getY() + masky - Camera.y,mwidth,mheight);
 	}

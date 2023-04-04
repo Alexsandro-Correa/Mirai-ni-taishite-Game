@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import com.alex.entities.Enemy;
 import com.alex.entities.Entity;
 
 import com.alex.entities.Player;
@@ -33,13 +34,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean isRunning = true;
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
-	public static final int SCALE = 4;
+	public static final int SCALE = 6;
 
 	private BufferedImage image;
 
 	public static World world;
 	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
+	public static Spritesheet spritePlayer;
 	public static Player player;
 	public static Menu menu;
 
@@ -58,8 +60,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		// Inicializando objetos.
 		spritesheet = new Spritesheet("/spritesheet.png");
+		spritePlayer = new Spritesheet("/skins.png");
 		entities = new ArrayList<Entity>();
-		player = new Player(WIDTH / 2 - 30, HEIGHT / 2, 16, 16, 1, Entity.PLAYER_RIGHT[0]);
+		player = new Player(WIDTH / 2 - 30, HEIGHT / 2, 36, 32, 1, Player.playerRight);
 		world = new World("/level1.png");
 		ui = new UI();
 		
@@ -102,9 +105,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void tick() {
 		if (gameState == "INICIO") {
-			for (int i = 0; i < entities.size(); i++) {
+				for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
-
+				
 				e.tick();
 			}
 		}else if(gameState == "MENU") {
@@ -138,7 +141,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			ui.render(g);
 		}	
 
-		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		
@@ -146,6 +148,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			menu.render(g);
 		}	
 		
+		g.dispose();
 		bs.show();
 	}
 

@@ -6,10 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.alex.entities.Coin;
 import com.alex.entities.Enemy;
-import com.alex.entities.Entity;
-import com.alex.entities.Player;
 import com.alex.main.Game;
 
 public class World {
@@ -42,12 +39,8 @@ public class World {
 								Game.player.setX(xx*16);
 								Game.player.setY(yy*16);
 							}else if(pixelAtual == 0xFF4CFF00) {
-								Enemy enemy = new Enemy(xx*16,yy*16,16,16,1,Entity.ENEMY1_RIGHT);
+								Enemy enemy = new Enemy(xx*16,yy*16,24,24,0.8,Enemy.enemyRight);
 								Game.entities.add(enemy);
-							}else if(pixelAtual == 0xFFFFD800) {
-								Coin coin = new Coin(xx*16,yy*16,16,16,1,Entity.COIN);
-								Game.entities.add(coin);
-								Player.maxCoins++;
 							}else if(pixelAtual == 0xFF404040) {
 								tiles[xx +(yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Game.spritesheet.getSprite(16, 32, 16, 16));
 							}

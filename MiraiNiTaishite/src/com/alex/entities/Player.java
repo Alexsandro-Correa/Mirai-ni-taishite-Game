@@ -23,7 +23,7 @@ public class Player extends Entity {
 	public boolean jump = false;
 
 	public boolean isJumping = false;
-	public int jumpHeight = 48;
+	public int jumpHeight = 64;
 	public int jumpFrames = 0;
 
 	private int framesAnimation = 0;
@@ -31,32 +31,65 @@ public class Player extends Entity {
 
 	private int maxSprite = 2;
 	private int curSprite = 0;
+	
+	public static BufferedImage playerRight;
+	public static BufferedImage playerLeft;
+	
+	public static int[] pixelsPlayer; 
+	
 
 	public Player(int x, int y, int width, int height, double speed, BufferedImage sprite) {
 		super(x, y, width, height, speed, sprite);
-
+		
+		playerRight = Game.spritePlayer.getSprite(0, 0, 36, 32);
+		playerLeft = Game.spritePlayer.getSprite(37, 0, 36, 32);
+		pixelsPlayer = new int[playerRight.getWidth() * playerRight.getHeight()];
+		playerRight.getRGB(0, 0, playerRight.getWidth(), playerRight.getHeight(), pixelsPlayer, 0, playerRight.getWidth());
+		if(pixelsPlayer[0] == 0x00000000) {
+			System.out.println("Transparente");
+		}
+		
 	}
 
 	public void tick() {
+		
 		depth = 2;
-
+		
+		for(int i = 0; i < Game.entities.size() -1; i++) {
+			if(Entity.isCollidingPerfect(getX(), getY()-8, pixelsPlayer, playerRight, Game.entities.get(i).getX(), Game.entities.get(i).getY(), Enemy.pixelsEnemy, Enemy.enemyRight)) {
+				x = x -30;
+				if(x < Game.WIDTH) {
+					x = Game.WIDTH / 2 - 70;
+				}
+				y = Game.HEIGHT / 5 ;
+				life--;
+				
+				System.out.println("Colidindo");
+				
+			}
+		}
+		
+		
+		
+		
+		
 		if (World.isFree((int) x, (int) (y + gravity)) && isJumping == false) {
 			y += gravity;
 			for (int i = 0; i < Game.entities.size(); i++) {
-				Entity e = Game.entities.get(i);
-				if (e instanceof Enemy) {
+				//Entity e = Game.entities.get(i);
+				
+				/*if (e instanceof Enemy) {
 					if (Entity.isColliding(this, e)) {
 						// Aplicar o pulo
 						isJumping = true;
-						jumpHeight = 24;
-						// Remover vida do inimigo
+						
 						((Enemy) e).life--;
 						if (((Enemy) e).life == 0) {
 							Game.entities.remove(i);
 							break;
 						}
 					}
-				}
+				}*/
 			}
 		}
 		if (right && World.isFree((int) (x + speed), (int) y)) {
@@ -92,17 +125,17 @@ public class Player extends Entity {
 		}
 
 		// Detectar Dano
-		for (int i = 0; i < Game.entities.size(); i++) {
+		/*for (int i = 0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
 			if (e instanceof Enemy) {
 				if (Entity.isColliding(this, e)) {
 					life--;
 				}
 			}
-		}
+		}*/
 
 		// Detectar Colisão com a moeda e aumentar contagem
-		for (int i = 0; i < Game.entities.size(); i++) {
+		/*for (int i = 0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
 			if (e instanceof Coin) {
 				if (Entity.isColliding(this, e)) {
@@ -113,7 +146,7 @@ public class Player extends Entity {
 					}
 				}
 			}
-		}
+		}*/
 
 		Camera.x = Camera.clamp((int) x - Game.WIDTH / 2, 0, World.WIDTH * 16 - Game.WIDTH);
 		Camera.y = Camera.clamp((int) y - Game.HEIGHT / 2, 0, World.HEIGHT * 16 - Game.HEIGHT);
@@ -129,9 +162,9 @@ public class Player extends Entity {
 			}
 		}
 		if (dir == 1) {
-			sprite = Entity.PLAYER_RIGHT[curSprite];
+			g.drawImage(playerRight,this.getX() - 8 - Camera.x, this.getY() - 8 - Camera.y,24,24, null);
 		} else if (dir == -1) {
-			sprite = Entity.PLAYER_LEFT[curSprite];
+			g.drawImage(playerLeft,this.getX() - Camera.x, this.getY() - 8 - Camera.y,24,24, null);
 		}
 		super.render(g);
 	}
