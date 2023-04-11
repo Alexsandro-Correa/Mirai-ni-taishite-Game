@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import com.alex.entities.Bullets;
 import com.alex.entities.Enemy;
 import com.alex.entities.Entity;
 
@@ -32,19 +33,22 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
-	public static final int WIDTH = 240;
-	public static final int HEIGHT = 160;
-	public static final int SCALE = 6;
+	public static final int WIDTH = 352;
+	public static final int HEIGHT = 208;
+	public static final int SCALE = 4;
 
 	private BufferedImage image;
 
 	public static World world;
+	public static List<Bullets> bullets;
 	public static List<Entity> entities;
+	public static List<Enemy> enemies;
 	public static Spritesheet spritesheet;
 	public static Spritesheet spritePlayer;
+	public static Spritesheet background;
 	public static Player player;
 	public static Menu menu;
-
+	
 	public UI ui;
 
 	public static String gameState = "MENU";
@@ -61,11 +65,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		// Inicializando objetos.
 		spritesheet = new Spritesheet("/spritesheet.png");
 		spritePlayer = new Spritesheet("/skins.png");
+		background = new Spritesheet("/cidade.jpg");
 		entities = new ArrayList<Entity>();
+		enemies = new ArrayList<Enemy>();
 		player = new Player(WIDTH / 2 - 30, HEIGHT / 2, 36, 32, 1, Player.playerRight);
 		world = new World("/level1.png");
 		ui = new UI();
-		
+
+		bullets = new ArrayList<Bullets>();
+
 		entities.add(player);
 
 		menu = new Menu();
@@ -105,14 +113,20 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void tick() {
 		if (gameState == "INICIO") {
-				for (int i = 0; i < entities.size(); i++) {
+			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
-				
 				e.tick();
 			}
-		}else if(gameState == "MENU") {
+			for (int i = 0; i < enemies.size(); i++) {
+				Enemy enemy = enemies.get(i);
+				enemy.tick();
+			}
+			for (int i = 0; i < bullets.size(); i++) {
+				bullets.get(i).tick();
+			}
+		} else if (gameState == "MENU") {
 			menu.tick();
-		}else if(gameState == "SAIR") {
+		} else if (gameState == "SAIR") {
 			System.exit(0);
 		}
 
@@ -124,12 +138,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			this.createBufferStrategy(3);
 			return;
 		}
+		
 		Graphics g = image.getGraphics();
 		g.setColor(new Color(122, 102, 255));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
-		
-		
+
 		// Renderização do Jogo
 		if (gameState == "INICIO") {
 			world.render(g);
@@ -138,15 +152,24 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				Entity e = entities.get(i);
 				e.render(g);
 			}
+			for (int i = 0; i < enemies.size(); i++) {
+				Entity e = enemies.get(i);
+				e.render(g);
+			}
+			for (int i = 0; i < bullets.size(); i++) {
+				bullets.get(i).render(g);
+			}
 			ui.render(g);
-		}	
-
+		}
+		
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		
-		if(gameState == "MENU") {
+		if (gameState == "MENU") {
 			menu.render(g);
-		}	
+		}
+
+		
 		
 		g.dispose();
 		bs.show();
@@ -189,8 +212,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
-		if(gameState == "MENU") {
+
+		if (gameState == "MENU") {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				menu.up = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -199,7 +222,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				menu.enter = true;
 			}
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_A) {
@@ -208,12 +231,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			player.jump = true;
 		}
+		if(e.getKeyCode() == KeyEvent.VK_X) {
+			player.shoot = true;
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
-		if(gameState == "MENU") {
+
+		if (gameState == "MENU") {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				menu.up = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -222,7 +248,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				menu.enter = false;
 			}
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_A) {

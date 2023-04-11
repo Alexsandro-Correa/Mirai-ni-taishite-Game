@@ -15,7 +15,7 @@ import com.alex.world.World;
 
 public class Entity {
 	
-	public static BufferedImage COIN = Game.spritesheet.getSprite(16, 16, 16, 16);
+	public static BufferedImage HEART = Game.spritesheet.getSprite(16, 16, 16, 16);
 	public static BufferedImage SNOW = Game.spritesheet.getSprite(0, 48, 16, 16);
 	
 	public double x;
@@ -23,6 +23,7 @@ public class Entity {
 	protected double speed;
 	protected int width;
 	protected int height;
+	public int life;
 	
 	public int depth;
 	

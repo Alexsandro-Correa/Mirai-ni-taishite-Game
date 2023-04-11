@@ -4,22 +4,23 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import com.alex.entities.Entity;
 import com.alex.entities.Player;
 import com.alex.main.Game;
 
 public class UI {
 
 	public void render(Graphics g) {
-		g.setColor(Color.red);
+		
 		if(Player.life == 3) {
-		g.fillRect(6*Game.SCALE, 6*Game.SCALE, 2*Game.SCALE, 3*Game.SCALE);
-		g.fillRect(9*Game.SCALE, 6*Game.SCALE, 2*Game.SCALE, 3*Game.SCALE);
-		g.fillRect(12*Game.SCALE, 6*Game.SCALE, 2*Game.SCALE, 3*Game.SCALE);
+			g.drawImage(Entity.HEART, 6*Game.SCALE, 6*Game.SCALE, 3*Game.SCALE, 3*Game.SCALE, null);
+			g.drawImage(Entity.HEART, 9*Game.SCALE, 6*Game.SCALE, 3*Game.SCALE, 3*Game.SCALE, null);
+			g.drawImage(Entity.HEART, 12*Game.SCALE, 6*Game.SCALE, 3*Game.SCALE, 3*Game.SCALE, null);
 		}else if(Player.life == 2) {
-			g.fillRect(6*Game.SCALE, 6*Game.SCALE, 2*Game.SCALE, 3*Game.SCALE);
-			g.fillRect(9*Game.SCALE, 6*Game.SCALE, 2*Game.SCALE, 3*Game.SCALE);
+			g.drawImage(Entity.HEART, 6*Game.SCALE, 6*Game.SCALE, 3*Game.SCALE, 3*Game.SCALE, null);
+			g.drawImage(Entity.HEART, 9*Game.SCALE, 6*Game.SCALE, 3*Game.SCALE, 3*Game.SCALE, null);
 		}else {
-			g.fillRect(6*Game.SCALE, 6*Game.SCALE, 2*Game.SCALE, 3*Game.SCALE);
+			g.drawImage(Entity.HEART, 6*Game.SCALE, 6*Game.SCALE, 3*Game.SCALE, 3*Game.SCALE, null);
 		}
 		//g.setColor(Color.white);
 		//g.drawRect(10, 30, 200, 30);

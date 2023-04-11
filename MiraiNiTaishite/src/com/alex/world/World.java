@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.alex.entities.Enemy;
+import com.alex.entities.Particle;
+import com.alex.entities.Player;
 import com.alex.main.Game;
 
 public class World {
@@ -39,8 +41,11 @@ public class World {
 								Game.player.setX(xx*16);
 								Game.player.setY(yy*16);
 							}else if(pixelAtual == 0xFF4CFF00) {
-								Enemy enemy = new Enemy(xx*16,yy*16,24,24,0.8,Enemy.enemyRight);
-								Game.entities.add(enemy);
+								Enemy enemy = new Enemy(xx*16,yy*16,24,24,1,Enemy.enemyRight);
+								Game.enemies.add(enemy);
+							}else if(pixelAtual == 0xFFFF00DC) {
+								Enemy enemy2 = new Enemy(xx*16,yy*16,24,24,1,Enemy.enemyRight2);
+								Game.enemies.add(enemy2);
 							}else if(pixelAtual == 0xFF404040) {
 								tiles[xx +(yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Game.spritesheet.getSprite(16, 32, 16, 16));
 							}
@@ -95,7 +100,17 @@ public class World {
 
 	public static void restartGame() {
 		//TODO: Aplicar método para reiniciar o jogo corretamente
+		
+		
+		Game.player = new Player((int)Game.player.x -30, Game.HEIGHT/4, 36, 32, 1, Player.playerRight);
+	
 		return;
+	}
+	
+	public static void generateParticles(int amount, int x, int y) {
+		for(int i = 0 ; i < amount; i++) {
+			Game.entities.add(new Particle(x,y,1,1,1,null));
+		}
 	}
 
 	public void render(Graphics g) {
