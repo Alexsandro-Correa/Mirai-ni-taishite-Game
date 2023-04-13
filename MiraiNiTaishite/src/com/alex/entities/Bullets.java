@@ -13,6 +13,7 @@ public class Bullets extends Entity {
 	private double dy;
 	private double spd = 4;
 
+	public static BufferedImage bulletSprite;
 	public static BufferedImage bulletRight;
 	public static BufferedImage bulletLeft;
 

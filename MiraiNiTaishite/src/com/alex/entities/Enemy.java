@@ -16,6 +16,7 @@ public class Enemy extends Entity {
 
 	public int dir = 1;
 
+	public static BufferedImage enemySprite;
 	public static BufferedImage enemyRight;
 	public static BufferedImage enemyLeft;
 	public static BufferedImage enemyRight2;
@@ -79,20 +80,22 @@ public class Enemy extends Entity {
 
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			for (int b = 0; b < Game.bullets.size(); b++) {
-				Entity e = Game.enemies.get(i);
-				Entity blts = Game.bullets.get(b);
+				// Game.bullets.get(0).setX(248);
+				// Game.bullets.get(0).setY(76);
+				if (collision(Enemy.enemySprite, Game.enemies.get(i).getX(), Game.enemies.get(i).getY(),
+						Bullets.bulletRight, Game.bullets.get(b).getX(), Game.bullets.get(b).getY(), 21, 8, 18, -7)) {
+					System.out.println("Pei");
 
-				if (e instanceof Enemy) {
-					if (Entity.isColliding(e, blts)) {
-						((Enemy) e).life--;
-						System.out.println("Dano");
-						Game.bullets.remove(b);
+					Game.enemies.get(i).life--;
+					System.out.println("Dano");
+					Game.bullets.remove(b);
 
-						if (((Enemy) e).life == 0) {
-							Game.enemies.remove(i);
-							break;
-						}
+					if (Game.enemies.get(i).life == 0) {
+						Game.enemies.remove(i);
+						Player.currentCoins += 5;
+						break;
 					}
+
 				}
 			}
 
@@ -101,13 +104,15 @@ public class Enemy extends Entity {
 	}
 
 	public void render(Graphics g) {
-		
-			if (dir == 1) {
-				g.drawImage(enemyRight, this.getX() - 2 - Camera.x, this.getY() - 16 - Camera.y, 32, 32, null);
-			} else if (dir == -1) {
-				g.drawImage(enemyLeft, this.getX() - 2 - Camera.x, this.getY() - 16 - Camera.y, 32, 32, null);
-			}
-		
+
+		if (dir == 1) {
+			enemySprite = enemyRight;
+		} else if (dir == -1) {
+			enemySprite = enemyLeft;
+		}
+
+		g.drawImage(enemySprite, this.getX() - 2 - Camera.x, this.getY() - 16 - Camera.y, 32, 32, null);
+
 		super.render(g);
 	}
 

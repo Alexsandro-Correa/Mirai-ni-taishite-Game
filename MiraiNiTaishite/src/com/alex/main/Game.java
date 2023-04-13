@@ -25,6 +25,7 @@ import com.alex.entities.Entity;
 import com.alex.entities.Player;
 import com.alex.graficos.Spritesheet;
 import com.alex.graficos.UI;
+import com.alex.world.Climate;
 import com.alex.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
@@ -48,6 +49,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Spritesheet background;
 	public static Player player;
 	public static Menu menu;
+	public static Climate climate;
 	
 	public UI ui;
 
@@ -71,7 +73,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(WIDTH / 2 - 30, HEIGHT / 2, 36, 32, 1, Player.playerRight);
 		world = new World("/level1.png");
 		ui = new UI();
-
+		climate = new Climate(HEIGHT, SCALE, 0, 0, HEIGHT, Entity.SNOW);
+		
 		bullets = new ArrayList<Bullets>();
 
 		entities.add(player);
