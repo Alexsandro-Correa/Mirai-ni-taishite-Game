@@ -1,0 +1,47 @@
+ Lógica
+ 
+ - player (move em todas as direções) ok
+ 
+ - sistema de vida; ok
+ 
+ - efeitos sonoros; 
+ 
+ - A* nos inimigos; ok
+ 
+ - modo fantasma nos inimigos;
+ 
+ - dropar moedas com valores diferentes considerando
+  a força do inimigo derrotado e aleatorizando o drop
+  colocando pequenas chances de vir um valor maior.
+  
+ - coletar moedas;
+ 
+ - sitema de compra de armas,munição e vida;
+ 
+ - colisões; ok player/inimigo, inimigo/bullet
+ 
+ - mapa de fundo do game;
+ 
+ - sistema de clima;
+ 
+ - sistema de fases;
+ 
+ - posição do tiro;
+ 
+ - animação das sprites;
+ 
+ - criar sistema de menu;
+ 
+ 
+ 
+ Organização
+ 
+ - Criar arquivos separados por categoria pra cada tipo de sprite;
+ 
+ - Criar pacotes para organanizar o projeto; ok
+ 
+ - Apagar códigos que não estão sendo utilizados;
+ 
+ - Comentar funções para se localizar;
+ 
+ - Definir número de sprites do jogo;

@@ -24,7 +24,7 @@ public class UI {
 		}
 		g.setColor(Color.yellow);
 		g.setFont(new Font("Arial", Font.BOLD, 3*Game.SCALE));
-		g.drawString("Coin: " + Player.currentCoins ,  46*Game.SCALE,9*Game.SCALE);
+		g.drawString("Coin: " + Player.currentCoins ,  75*Game.SCALE,9*Game.SCALE);
 	}
 
 }

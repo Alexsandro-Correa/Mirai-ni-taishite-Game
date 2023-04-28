@@ -89,6 +89,7 @@ public class Enemy extends Entity {
 					Game.enemies.get(i).life--;
 					System.out.println("Dano");
 					Game.bullets.remove(b);
+					//World.generateParticles(5,(int) x, (int)y);
 
 					if (Game.enemies.get(i).life == 0) {
 						Game.enemies.remove(i);

@@ -47,10 +47,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Spritesheet spritesheet;
 	public static Spritesheet spritePlayer;
 	public static Spritesheet background;
+	public static Spritesheet guns;
 	public static Player player;
 	public static Menu menu;
+	public static Pause pause;
+	public static MarketMenu market;
 	public static Climate climate;
-	
+
 	public UI ui;
 
 	public static String gameState = "MENU";
@@ -68,18 +71,21 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		spritesheet = new Spritesheet("/spritesheet.png");
 		spritePlayer = new Spritesheet("/skins.png");
 		background = new Spritesheet("/cidade.jpg");
+		guns = new Spritesheet("/guns.png");
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		player = new Player(WIDTH / 2 - 30, HEIGHT / 2, 36, 32, 1, Player.playerRight);
 		world = new World("/level1.png");
 		ui = new UI();
 		climate = new Climate(HEIGHT, SCALE, 0, 0, HEIGHT, Entity.SNOW);
-		
+
 		bullets = new ArrayList<Bullets>();
 
 		entities.add(player);
 
 		menu = new Menu();
+		pause = new Pause();
+		market = new MarketMenu();
 	}
 
 	public void initFrame() {
@@ -129,6 +135,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			}
 		} else if (gameState == "MENU") {
 			menu.tick();
+		} else if (gameState == "PAUSE") {
+			pause.tick();
+		} else if (gameState == "MARKET") {
+			market.tick();
 		} else if (gameState == "SAIR") {
 			System.exit(0);
 		}
@@ -141,11 +151,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			this.createBufferStrategy(3);
 			return;
 		}
-		
+
 		Graphics g = image.getGraphics();
 		g.setColor(new Color(122, 102, 255));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-
 
 		// Renderização do Jogo
 		if (gameState == "INICIO") {
@@ -164,16 +173,22 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			}
 			ui.render(g);
 		}
-		
+
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
-		
+
 		if (gameState == "MENU") {
 			menu.render(g);
 		}
 
-		
-		
+		if (gameState == "PAUSE") {
+			pause.render(g);
+		}
+
+		if (gameState == "MARKET") {
+			market.render(g);
+		}
+
 		g.dispose();
 		bs.show();
 	}
@@ -221,10 +236,52 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				menu.up = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
 				menu.down = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+				menu.up = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				menu.down = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				menu.enter = true;
 			}
 		}
+
+		if (gameState == "PAUSE") {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				pause.up = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_S) {
+				pause.down = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+				pause.up = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				pause.down = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				pause.enter = true;
+			}
+		}
+		
+		if(gameState == "MARKET") {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				market.up = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_S) {
+				market.down = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+				market.up = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				market.down = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				market.enter = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_V) {
+				gameState = "INICIO";
+			}
+		}
+		
+		if(gameState == "INICIO") {
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				gameState = "PAUSE";
+			}
+		}
+
 
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = true;
@@ -234,8 +291,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			player.jump = true;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_X) {
+		if (e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = true;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_B) {
+			// Abrir Menu de Compras
+			gameState = "MARKET";
 		}
 	}
 
@@ -247,8 +308,40 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				menu.up = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
 				menu.down = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+				menu.up = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				menu.down = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				menu.enter = false;
+			}
+		}
+
+		if (gameState == "PAUSE") {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				pause.up = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_S) {
+				pause.down = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+				pause.up = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				pause.down = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				pause.enter = false;
+			}
+		}
+		
+		if(gameState == "MARKET") {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				market.up = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_S) {
+				market.down = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+				market.up = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				market.down = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				market.enter = false;
 			}
 		}
 

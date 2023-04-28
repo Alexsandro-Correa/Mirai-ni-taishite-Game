@@ -43,7 +43,7 @@ public class Player extends Entity {
 		super(x, y, width, height, speed, sprite);
 
 		playerRight = Game.spritePlayer.getSprite(0, 0, 36, 32);
-		playerLeft = Game.spritePlayer.getSprite(37, 0, 36, 32);
+		playerLeft = Game.spritePlayer.getSprite(0, 33, 36, 32);
 
 	}
 
@@ -161,14 +161,16 @@ public class Player extends Entity {
 				dx = 1;
 
 			}
+			
 
 			Bullets bullet = new Bullets(this.getX() + px, this.getY() + py, 8, 8, 1, null, dx, 0);
 			Game.bullets.add(bullet);
 		}
-		
-		if(life <= 0) {
+
+		if (life <= 0) {
 			Game.gameState = "MENU";
 			life = 3;
+			World.restartGame();
 		}
 
 		Camera.x = Camera.clamp((int) x - Game.WIDTH / 2, 0, World.WIDTH * 16 - Game.WIDTH);

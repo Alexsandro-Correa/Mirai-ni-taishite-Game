@@ -25,10 +25,7 @@ public class Bullets extends Entity {
 		this.dy = dy;
 
 		bulletRight = Game.spritesheet.getSprite(96, 0, 16, 16);
-		bulletLeft = Game.spritesheet.getSprite(80, 0, 16, 16);
-		pixelsBullet = new int[bulletRight.getWidth() * bulletRight.getHeight()];
-		bulletRight.getRGB(0, 0, bulletRight.getWidth(), bulletRight.getHeight(), pixelsBullet, 0,
-				bulletRight.getWidth());
+		
 
 	}
 
@@ -38,7 +35,7 @@ public class Bullets extends Entity {
 			y += dy * spd;
 		} else {
 			Game.bullets.remove(this);
-			// World.generateParticles(5,(int) x,(int) y);
+			//World.generateParticles(5,(int) x,(int) y);
 		}
 
 	}

@@ -48,6 +48,8 @@ public class World {
 								Game.enemies.add(enemy2);
 							}else if(pixelAtual == 0xFF404040) {
 								tiles[xx +(yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Game.spritesheet.getSprite(16, 32, 16, 16));
+							}else if(pixelAtual == 0XFF808080) {
+								tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_EDIFICE);
 							}
 						}
 					}
@@ -99,10 +101,12 @@ public class World {
 	}
 
 	public static void restartGame() {
-		//TODO: Aplicar método para reiniciar o jogo corretamente
 		
-		
-		Game.player = new Player((int)Game.player.x -30, Game.HEIGHT/4, 36, 32, 1, Player.playerRight);
+		Game.enemies.clear();
+		Game.entities.clear();
+		Game.entities.add
+		(Game.player = new Player(Game.WIDTH / 2 - 30, Game.HEIGHT / 2, 36, 32, 1, Player.playerRight));
+		Game.world = new World("/level1.png");
 	
 		return;
 	}
