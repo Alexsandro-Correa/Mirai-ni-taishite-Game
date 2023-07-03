@@ -1,36 +1,36 @@
  Lógica
  
- - player (move em todas as direções) ok
+ - player (move em todas as direções) (x)
  
- - sistema de vida; ok
+ - sistema de vida; (x)
  
- - efeitos sonoros; 
+ - efeitos sonoros (); 
  
- - A* nos inimigos; ok
+ - A* nos inimigos; (x)
  
  - modo fantasma nos inimigos;
  
  - dropar moedas com valores diferentes considerando
   a força do inimigo derrotado e aleatorizando o drop
-  colocando pequenas chances de vir um valor maior.
+  colocando pequenas chances de vir um valor maior. ()
   
- - coletar moedas;
+ - coletar moedas(Talvez não tenha);
  
- - sitema de compra de armas,munição e vida;
+ - sitema de compra de armas,munição e vida();
  
- - colisões; ok player/inimigo, inimigo/bullet
+ - colisões; (x)
  
- - mapa de fundo do game;
+ - mapa de fundo do game ();
  
- - sistema de clima;
+ - sistema de clima (Aprimorar);
  
- - sistema de fases;
+ - sistema de fases ();
  
- - posição do tiro;
+ - posição do tiro ();
  
- - animação das sprites;
+ - animação das sprites (x) player;
  
- - criar sistema de menu;
+ - criar sistema de menu (Encaminhada);
  
  
  

@@ -22,7 +22,8 @@ public class Enemy extends Entity {
 	public static BufferedImage enemyRight2;
 	public static BufferedImage enemyLeft2;
 
-	public boolean enemy1, enemy2;
+	public boolean enemy1;
+	public boolean enemy2;
 
 	public static int[] pixelsEnemy;
 	public static int[] pixelsEnemy2;
@@ -34,11 +35,6 @@ public class Enemy extends Entity {
 		enemyLeft = Game.spritesheet.getSprite(80, 0, 16, 16);
 		enemyRight2 = Game.spritesheet.getSprite(96, 17, 16, 16);
 		enemyLeft2 = Game.spritesheet.getSprite(80, 17, 16, 16);
-		pixelsEnemy = new int[enemyRight.getWidth() * enemyRight.getHeight()];
-		pixelsEnemy2 = new int[enemyRight2.getWidth() * enemyRight2.getHeight()];
-		enemyRight.getRGB(0, 0, enemyRight.getWidth(), enemyRight.getHeight(), pixelsEnemy, 0, enemyRight.getWidth());
-		enemyRight2.getRGB(0, 0, enemyRight2.getWidth(), enemyRight2.getHeight(), pixelsEnemy, 0,
-				enemyRight2.getWidth());
 	}
 
 	public void tick() {
@@ -80,41 +76,60 @@ public class Enemy extends Entity {
 
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			for (int b = 0; b < Game.bullets.size(); b++) {
-				// Game.bullets.get(0).setX(248);
-				// Game.bullets.get(0).setY(76);
-				if (collision(Enemy.enemySprite, Game.enemies.get(i).getX(), Game.enemies.get(i).getY(),
-						Bullets.bulletRight, Game.bullets.get(b).getX(), Game.bullets.get(b).getY(), 21, 8, 18, -7)) {
+				// Game.bullets.get(0).setX(253);
+				// Game.bullets.get(0).setY(83);
+
+				if (World.checkCollision(Enemy.enemySprite, Game.enemies.get(i).getX(), Game.enemies.get(i).getY() + 1,
+						Bullets.bulletRight, Game.bullets.get(b).getX(), Game.bullets.get(b).getY())
+						|| World.checkCollision(Enemy.enemySprite, Game.enemies.get(i).getX(),
+								Game.enemies.get(i).getY() + 1, Bullets.bulletRight, Game.bullets.get(b).getX(),
+								Game.bullets.get(b).getY() - 4)) {
 					System.out.println("Pei");
 
 					Game.enemies.get(i).life--;
 					System.out.println("Dano");
 					Game.bullets.remove(b);
-					//World.generateParticles(5,(int) x, (int)y);
+					// World.generateParticles(5,(int)
+					// Game.enemies.get(i).getX(),(int)Game.enemies.get(i).getY());
 
 					if (Game.enemies.get(i).life == 0) {
 						Game.enemies.remove(i);
 						Player.currentCoins += 5;
 						break;
 					}
-
 				}
+
 			}
 
+		}
+
+		// Substituir o restart por nova fase
+
+		if (Game.enemies.size() == 0) {
+			World.restartGame();
 		}
 
 	}
 
 	public void render(Graphics g) {
 
-		if (dir == 1) {
-			enemySprite = enemyRight;
-		} else if (dir == -1) {
-			enemySprite = enemyLeft;
+		if (enemy1) {
+			if (dir == 1) {
+				enemySprite = enemyRight;
+			} else if (dir == -1) {
+				enemySprite = enemyLeft;
+			}
+		}else if(enemy2) {
+			if (dir == 1) {
+				enemySprite = enemyRight2;
+			} else if (dir == -1) {
+				enemySprite = enemyLeft2;
+			}
 		}
 
 		g.drawImage(enemySprite, this.getX() - 2 - Camera.x, this.getY() - 16 - Camera.y, 32, 32, null);
 
-		super.render(g);
+		// super.render(g);
 	}
 
 }

@@ -42,9 +42,13 @@ public class World {
 								Game.player.setY(yy*16);
 							}else if(pixelAtual == 0xFF4CFF00) {
 								Enemy enemy = new Enemy(xx*16,yy*16,24,24,1,Enemy.enemyRight);
+								enemy.enemy1 = true;
+								enemy.enemy2 = false;
 								Game.enemies.add(enemy);
 							}else if(pixelAtual == 0xFFFF00DC) {
 								Enemy enemy2 = new Enemy(xx*16,yy*16,24,24,1,Enemy.enemyRight2);
+								enemy2.enemy1 = false;
+								enemy2.enemy2 = true;
 								Game.enemies.add(enemy2);
 							}else if(pixelAtual == 0xFF404040) {
 								tiles[xx +(yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Game.spritesheet.getSprite(16, 32, 16, 16));
@@ -104,8 +108,9 @@ public class World {
 		
 		Game.enemies.clear();
 		Game.entities.clear();
+		Game.bullets.clear();
 		Game.entities.add
-		(Game.player = new Player(Game.WIDTH / 2 - 30, Game.HEIGHT / 2, 36, 32, 1, Player.playerRight));
+		(Game.player = new Player(Game.WIDTH / 2 - 30, Game.HEIGHT / 2, 36, 32, 1, Player.playerRight[0]));
 		Game.world = new World("/level1.png");
 	
 		return;
@@ -115,6 +120,30 @@ public class World {
 		for(int i = 0 ; i < amount; i++) {
 			Game.entities.add(new Particle(x,y,1,1,1,null));
 		}
+	}
+	
+	public static boolean checkCollision(BufferedImage image1, int x1, int y1, BufferedImage image2, int x2, int y2) {
+        int width1 = image1.getWidth();
+        int height1 = image1.getHeight();
+        int width2 = image2.getWidth();
+        int height2 = image2.getHeight();
+
+        int startX = Math.max(x1, x2);
+        int startY = Math.max(y1, y2);
+        int endX = Math.min(x1 + width1, x2 + width2);
+        int endY = Math.min(y1 + height1, y2 + height2);
+
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
+                int pixel1 = image1.getRGB(x - x1, y - y1);
+                int pixel2 = image2.getRGB(x - x2, y - y2);
+
+                if (((pixel1 >> 24) & 0xff) != 0 && ((pixel2 >> 24) & 0xff) != 0) {
+                    return true;
+                }
+            }
+           }
+		return false;
 	}
 
 	public void render(Graphics g) {

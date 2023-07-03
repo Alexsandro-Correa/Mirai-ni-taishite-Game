@@ -125,16 +125,6 @@ public class Entity {
 
 	}
 
-	public static boolean collision(BufferedImage img1, int x1, int y1, BufferedImage img2, int x2, int y2,
-			int maskx1, int maskx2, int masky1, int masky2) {
-		if (x1 >= x2 - maskx1 && x1 <= x2 + maskx2 && y1 >= y2 - masky1 && y1 <= y2 +  masky2) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-
 	public void render(Graphics g) {
 		// g.drawImage(sprite, this.getX() -8- Camera.x, this.getY() -8- Camera.y, 24,
 		// 24, null);

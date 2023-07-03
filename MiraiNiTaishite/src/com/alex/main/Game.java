@@ -36,7 +36,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean isRunning = true;
 	public static final int WIDTH = 352;
 	public static final int HEIGHT = 208;
-	public static final int SCALE = 4;
+	public static final int SCALE = 3;
 
 	private BufferedImage image;
 
@@ -47,6 +47,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Spritesheet spritesheet;
 	public static Spritesheet spritePlayer;
 	public static Spritesheet background;
+	public static Spritesheet suitcase;
 	public static Spritesheet guns;
 	public static Player player;
 	public static Menu menu;
@@ -71,10 +72,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		spritesheet = new Spritesheet("/spritesheet.png");
 		spritePlayer = new Spritesheet("/skins.png");
 		background = new Spritesheet("/cidade.jpg");
+		suitcase = new Spritesheet("/market.png");
 		guns = new Spritesheet("/guns.png");
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
-		player = new Player(WIDTH / 2 - 30, HEIGHT / 2, 36, 32, 1, Player.playerRight);
+		player = new Player(WIDTH / 2 - 30, HEIGHT / 2, 36, 32, 1, Player.playerRight[0]);
 		world = new World("/level1.png");
 		ui = new UI();
 		climate = new Climate(HEIGHT, SCALE, 0, 0, HEIGHT, Entity.SNOW);
@@ -142,6 +144,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		} else if (gameState == "SAIR") {
 			System.exit(0);
 		}
+		climate.tick();
+	
 
 	}
 
@@ -153,12 +157,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 
 		Graphics g = image.getGraphics();
-		g.setColor(new Color(122, 102, 255));
+		g.setColor(new Color(0, 19, 127));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		// Renderização do Jogo
 		if (gameState == "INICIO") {
 			world.render(g);
+			climate.render(g);
 			Collections.sort(entities, Entity.nodeSorter);
 			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -292,7 +297,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			player.jump = true;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_X) {
-			player.shoot = true;
+			player.shoot = true;		
 		}
 		if (e.getKeyCode() == KeyEvent.VK_B) {
 			// Abrir Menu de Compras

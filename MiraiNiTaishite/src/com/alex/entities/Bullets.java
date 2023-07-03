@@ -16,6 +16,8 @@ public class Bullets extends Entity {
 	public static BufferedImage bulletSprite;
 	public static BufferedImage bulletRight;
 	public static BufferedImage bulletLeft;
+	
+	public static boolean right,left;
 
 	public static int[] pixelsBullet;
 
@@ -24,29 +26,54 @@ public class Bullets extends Entity {
 		this.dx = dx;
 		this.dy = dy;
 
-		bulletRight = Game.spritesheet.getSprite(96, 0, 16, 16);
-		
+		bulletRight = Game.guns.getSprite(70, 3, 6, 4);
+		bulletLeft = Game.guns.getSprite(77, 3, 6, 4);
 
 	}
 
 	public void tick() {
-		if (World.isFreeDynamic((int) (x + (dx * spd)), (int) (y + (dy * spd)), 3, 3)) {
-			x -= dx * spd;
-			y += dy * spd;
-		} else {
-			Game.bullets.remove(this);
-			//World.generateParticles(5,(int) x,(int) y);
-		}
 
-	}
+
+		if (bulletSprite == bulletRight) {
+			if (World.isFreeDynamic((int) (x + 8 + (dx * spd)), (int) (y - 8 + (dy * spd)), 6, 4)) {
+				x -= dx * spd;
+				y += dy * spd;
+				if (x <= 0 || x > Game.player.getX() + 320) {
+					Game.bullets.remove(this);
+				}
+			} else {
+				Game.bullets.remove(this);
+				// World.generateParticles(5,(int) x,(int) y);
+			}
+		} else if (bulletSprite == bulletLeft) {
+			if (World.isFreeDynamic((int) (x - 6 + (dx * spd)), (int) (y - 8 + (dy * spd)), 6, 4)) {
+				x -= dx * spd;
+				y += dy * spd;
+				if (x <= 0 || x > Game.player.getX() + 320) {
+					Game.bullets.remove(this);
+				}
+			} else {
+				Game.bullets.remove(this);
+				// World.generateParticles(5,(int) x,(int) y);
+			}
+		
+		}
+		
+		
+
+		}
 
 	public void render(Graphics g) {
 
-		g.drawImage(bulletRight, this.getX() - Camera.x, this.getY() - 18 - Camera.y, 16, 16, null);
-
-		// g.setColor(Color.yellow);
-		// g.fillOval(this.getX() - Camera.x, this.getY() - Camera.y -10, width,
-		// height);
+		
+		if (right) {
+			bulletSprite = bulletRight;
+		} else if (left) {
+			bulletSprite = bulletLeft;
+		}
+		
+		g.drawImage(bulletSprite, this.getX() - Camera.x, this.getY() - 7 - Camera.y, 6, 4, null);
+		
 	}
 
 }

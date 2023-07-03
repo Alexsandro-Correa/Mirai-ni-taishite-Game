@@ -60,13 +60,16 @@ public class MarketMenu {
 		g2.setColor(new Color(0, 0, 0, 100));
 		g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
 		
-		g.drawImage(Game.background.getSprite(0, 0, 352, 208), 0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE,
+		g.drawImage(Game.suitcase.getSprite(0, 0, 352, 208), 0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE,
 				null);
 
 		g2.setColor(new Color(0, 0, 0, 80));
 		g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
+		
+		g.drawImage(Game.guns.getSprite(31, 1, 29, 12), 264 * Game.SCALE, 64 * Game.SCALE, 56 * Game.SCALE,
+				24 * Game.SCALE, null);
 
-		g.setColor(new Color(255, 91, 76));
+		/*g.setColor(new Color(255, 91, 76));
 		g.setFont(new Font("Arial", Font.BOLD, 16 * Game.SCALE));
 		g.drawString("Loja de Itens", 120 * Game.SCALE, 36 * Game.SCALE);
 		
@@ -91,7 +94,7 @@ public class MarketMenu {
 		g.fillRect(260*Game.SCALE,114*Game.SCALE, 32*Game.SCALE, 14*Game.SCALE);
 		
 		g.drawImage(Game.guns.getSprite(0, 1, 29, 12), 262 * Game.SCALE, 67 * Game.SCALE, 28 * Game.SCALE,
-				12 * Game.SCALE, null);
+				12 * Game.SCALE, null);*/
 		
 	}
 }
