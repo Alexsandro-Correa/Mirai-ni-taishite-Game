@@ -35,7 +35,7 @@ public class World {
 							}else if(pixelAtual == 0xFFFFFFFF) {
 								tiles[xx + (yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Tile.TILE_WALL);
 								if (yy-1 >= 0 && pixels[xx+((yy-1)* map.getWidth())] == 0xFFFFFFFF) {
-									tiles[xx +(yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Game.spritesheet.getSprite(0, 32, 16, 16));
+									tiles[xx +(yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Tile.TILE_WALL_DOWN);
 								}
 							}else if(pixelAtual == 0xFF00FFFF) {
 								Game.player.setX(xx*16);
@@ -44,12 +44,20 @@ public class World {
 								Enemy enemy = new Enemy(xx*16,yy*16,24,24,1,Enemy.enemyRight);
 								enemy.enemy1 = true;
 								enemy.enemy2 = false;
+								enemy.enemy3 = false;
 								Game.enemies.add(enemy);
 							}else if(pixelAtual == 0xFFFF00DC) {
 								Enemy enemy2 = new Enemy(xx*16,yy*16,24,24,1,Enemy.enemyRight2);
 								enemy2.enemy1 = false;
 								enemy2.enemy2 = true;
+								enemy2.enemy3 = false;
 								Game.enemies.add(enemy2);
+							}else if(pixelAtual == 0xFFFF0000) {
+								Enemy enemy3 = new Enemy(xx*16,yy*16,24,24,2,Enemy.enemyScrab);
+								enemy3.enemy1 = false;
+								enemy3.enemy2 = false;
+								enemy3.enemy3 = true;
+								Game.enemies.add(enemy3);
 							}else if(pixelAtual == 0xFF404040) {
 								tiles[xx +(yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Game.spritesheet.getSprite(16, 32, 16, 16));
 							}else if(pixelAtual == 0XFF808080) {
@@ -106,13 +114,17 @@ public class World {
 
 	public static void restartGame() {
 		
+		Player.currentCoins = 0;
+		Tile.TILE_WALL = Game.tiles.getSprite(0, 0, 16, 16);
+		Tile.TILE_WALL_DOWN = Game.tiles.getSprite(0, 16, 16, 16);
+		Tile.TILE_FLOOR = Game.tiles.getSprite(0, 32, 16, 16);
 		Game.enemies.clear();
 		Game.entities.clear();
 		Game.bullets.clear();
 		Game.entities.add
-		(Game.player = new Player(Game.WIDTH / 2 - 30, Game.HEIGHT / 2, 36, 32, 1, Player.playerRight[0]));
+		(Game.player = new Player(Game.WIDTH / 2 - 30, Game.HEIGHT / 2-16, 36, 32, 1, Player.playerRight[0]));
 		Game.world = new World("/level1.png");
-	
+		
 		return;
 	}
 	

@@ -68,11 +68,21 @@ public class Player extends Entity {
 
 			}
 		}
+		
+		if(y+20 >= Game.HEIGHT) {
+			life--;
+			x = x - 30;
+			y = Game.HEIGHT / 4;
+			if (x < Game.WIDTH) {
+				x = Game.WIDTH / 2 - 70;
+				y = Game.HEIGHT / 4;
+			}
+		}
 
 		if (World.isFree((int) x, (int) (y + gravity)) && isJumping == false) {
 			y += gravity;
 		}
-		if (right && World.isFree((int) (x + speed), (int) y) && Game.player.getX() <= (Game.WIDTH*Game.SCALE)+208) {
+		if (right && World.isFree((int) (x + speed), (int) y)) {
 			x += speed;
 			dir = 1;
 		} else if (left && World.isFree((int) (x - speed)-8, (int) y) && Game.player.getX() > 8) {
@@ -135,7 +145,6 @@ public class Player extends Entity {
 		if (life <= 0) {
 			Game.gameState = "MENU";
 			life = 3;
-			currentCoins = 0;
 			shoot = false;
 			World.restartGame();
 		}

@@ -23,6 +23,7 @@ import com.alex.entities.Enemy;
 import com.alex.entities.Entity;
 
 import com.alex.entities.Player;
+import com.alex.graficos.Explosion;
 import com.alex.graficos.Spritesheet;
 import com.alex.graficos.UI;
 import com.alex.world.Climate;
@@ -44,11 +45,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static List<Bullets> bullets;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
+	public static List<Explosion> explosion;
 	public static Spritesheet spritesheet;
 	public static Spritesheet spritePlayer;
 	public static Spritesheet background;
 	public static Spritesheet suitcase;
 	public static Spritesheet guns;
+	public static Spritesheet spriteEnemies;
+	public static Spritesheet tiles;
 	public static Player player;
 	public static Menu menu;
 	public static Pause pause;
@@ -58,6 +62,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public UI ui;
 
 	public static String gameState = "MENU";
+	public static String phase = "LEVEL1";
 
 	public Game() {
 		addKeyListener(this);
@@ -74,9 +79,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		background = new Spritesheet("/cidade.jpg");
 		suitcase = new Spritesheet("/market.png");
 		guns = new Spritesheet("/guns.png");
+		spriteEnemies = new Spritesheet("/enemies.png");
+		tiles = new Spritesheet("/tiles.png");
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
-		player = new Player(WIDTH / 2 - 30, HEIGHT / 2, 36, 32, 1, Player.playerRight[0]);
+		explosion = new ArrayList<>();
+		player = new Player(WIDTH / 2 - 30, HEIGHT / 2-16, 36, 32, 1, Player.playerRight[0]);
 		world = new World("/level1.png");
 		ui = new UI();
 		climate = new Climate(HEIGHT, SCALE, 0, 0, HEIGHT, Entity.SNOW);
@@ -135,6 +143,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			for (int i = 0; i < bullets.size(); i++) {
 				bullets.get(i).tick();
 			}
+			for (int i = 0; i < explosion.size(); i++) {
+				explosion.get(i).tick();
+			}
+
 		} else if (gameState == "MENU") {
 			menu.tick();
 		} else if (gameState == "PAUSE") {
@@ -145,7 +157,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			System.exit(0);
 		}
 		climate.tick();
-	
 
 	}
 
@@ -164,6 +175,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if (gameState == "INICIO") {
 			world.render(g);
 			climate.render(g);
+
 			Collections.sort(entities, Entity.nodeSorter);
 			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -175,6 +187,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			}
 			for (int i = 0; i < bullets.size(); i++) {
 				bullets.get(i).render(g);
+			}
+			for (int i = 0; i < explosion.size(); i++) {
+				explosion.get(i).render(g);
 			}
 			ui.render(g);
 		}
@@ -220,11 +235,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 			if (System.currentTimeMillis() - timer >= 1000) {
 				System.out.println("FPS: " + frames);
+				Game.frame.setTitle("Mirai Ni Taishite - "+"FPS: " + frames);
 				frames = 0;
 				timer += 1000;
 			}
 		}
-
+		
+		
 		stop();
 	}
 
@@ -263,8 +280,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				pause.enter = true;
 			}
 		}
-		
-		if(gameState == "MARKET") {
+
+		if (gameState == "MARKET") {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				market.up = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -280,13 +297,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				gameState = "INICIO";
 			}
 		}
-		
-		if(gameState == "INICIO") {
+
+		if (gameState == "INICIO") {
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				gameState = "PAUSE";
 			}
 		}
-
 
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = true;
@@ -297,7 +313,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			player.jump = true;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_X) {
-			player.shoot = true;		
+			player.shoot = true;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_L) {
+			Enemy.spawn = true;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_B) {
 			// Abrir Menu de Compras
@@ -335,8 +355,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				pause.enter = false;
 			}
 		}
-		
-		if(gameState == "MARKET") {
+
+		if (gameState == "MARKET") {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				market.up = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -354,6 +374,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			player.right = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_A) {
 			player.left = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_L) {
+			Enemy.spawn = false;
 		}
 	}
 

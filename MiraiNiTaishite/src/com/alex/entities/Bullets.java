@@ -16,8 +16,8 @@ public class Bullets extends Entity {
 	public static BufferedImage bulletSprite;
 	public static BufferedImage bulletRight;
 	public static BufferedImage bulletLeft;
-	
-	public static boolean right,left;
+
+	public static boolean right, left;
 
 	public static int[] pixelsBullet;
 
@@ -33,7 +33,11 @@ public class Bullets extends Entity {
 
 	public void tick() {
 
+		bulletLogic();
 
+	}
+
+	public void bulletLogic() {
 		if (bulletSprite == bulletRight) {
 			if (World.isFreeDynamic((int) (x + 8 + (dx * spd)), (int) (y - 8 + (dy * spd)), 6, 4)) {
 				x -= dx * spd;
@@ -56,24 +60,20 @@ public class Bullets extends Entity {
 				Game.bullets.remove(this);
 				// World.generateParticles(5,(int) x,(int) y);
 			}
-		
-		}
-		
-		
 
 		}
+	}
 
 	public void render(Graphics g) {
 
-		
 		if (right) {
 			bulletSprite = bulletRight;
 		} else if (left) {
 			bulletSprite = bulletLeft;
 		}
-		
+
 		g.drawImage(bulletSprite, this.getX() - Camera.x, this.getY() - 7 - Camera.y, 6, 4, null);
-		
+
 	}
 
 }

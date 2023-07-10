@@ -7,8 +7,12 @@ import com.alex.main.Game;
 
 public class Tile {
 
-	public static BufferedImage TILE_FLOOR = Game.spritesheet.getSprite(0, 0, 16, 16);
-	public static BufferedImage TILE_WALL = Game.spritesheet.getSprite(0, 16, 16, 16);
+	public static BufferedImage TILE_FLOOR = Game.tiles.getSprite(0, 32, 16, 16);
+	public static BufferedImage TILE_FLOOR2 = Game.tiles.getSprite(16, 32, 16, 16);
+	public static BufferedImage TILE_WALL = Game.tiles.getSprite(0, 0, 16, 16);
+	public static BufferedImage TILE_WALL_DOWN = Game.tiles.getSprite(0, 16, 16, 16);
+	public static BufferedImage TILE_WALL2 = Game.tiles.getSprite(16, 0, 16, 16);
+	public static BufferedImage TILE_WALL2_DOWN = Game.tiles.getSprite(16, 16, 16, 16);
 	public static BufferedImage TILE_EDIFICE = Game.spritesheet.getSprite(64, 128, 16, 16);
 	
 	private BufferedImage sprite;
@@ -19,6 +23,8 @@ public class Tile {
 		this.y = y;
 		this.sprite = sprite;
 	}
+	
+	
 	
 	public void render(Graphics g) {
 		g.drawImage(sprite, x - Camera.x, y - Camera.y, null);

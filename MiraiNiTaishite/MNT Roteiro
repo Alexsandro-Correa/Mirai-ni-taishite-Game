@@ -8,8 +8,6 @@
  
  - A* nos inimigos; (x)
  
- - modo fantasma nos inimigos;
- 
  - dropar moedas com valores diferentes considerando
   a força do inimigo derrotado e aleatorizando o drop
   colocando pequenas chances de vir um valor maior. ()
